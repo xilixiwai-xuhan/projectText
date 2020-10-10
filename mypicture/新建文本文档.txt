@@ -1,0 +1,46 @@
+1.添加驱动包  *.jar    放在web-inf  下的lib下
+2.加载驱动类 Class.forName("com.mysql.jdbc.Driver");
+3.获取数据库链接
+	List<commodity> list =new ArrayList<commodity>();
+	Connection conn=null;
+	Statement stmt=null;
+	ResultSet rs=null;
+
+  try/catch一下
+	conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/数据库名?characterEncoding=utf-8","root","1356902080");
+	stmt=conn.createStatement();
+	rs=stmt.executeQuery("select * from comm");
+		
+      while(rs.next()) {
+	int id=rs.getInt(1);
+	String name=rs.getString(2);
+	double price=rs.getDouble(3);
+	String detailed=rs.getString(4);
+	commodity user=new commodity(id,name,price,detailed);
+	list.add(user);
+
+    finally里
+             finally {
+	if(rs!=null)
+	{
+	try {
+		rs.close();
+	} catch (SQLException e) {
+	       e.printStackTrace();
+	     }
+	}
+	if(stmt!=null) {
+	try {
+	stmt.close();
+	} catch (SQLException e) {
+	e.printStackTrace();
+	}
+	}
+	if(conn!=null) {
+	try {
+	conn.close();
+	} catch (SQLException e) {
+	e.printStackTrace();
+	}
+	}
+	}
